@@ -9,7 +9,15 @@ from pathlib import Path
 from typing import Any, Callable
 
 
+def find_workspace_root(frontend_root: Path) -> Path:
+    for path in [frontend_root, *frontend_root.parents]:
+        if (path / "users").is_dir() and (path / "third_party" / "cabt-viewer").exists():
+            return path
+    return frontend_root.parent
+
+
 FRONTEND_ROOT = Path(__file__).resolve().parents[2]
+WORKSPACE_ROOT = find_workspace_root(FRONTEND_ROOT)
 SAMPLE_SUBMISSION = Path(
     os.environ.get(
         "CABT_SAMPLE_SUBMISSION_DIR",

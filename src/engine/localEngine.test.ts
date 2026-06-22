@@ -89,7 +89,7 @@ describe('LocalEngineController', () => {
 
     expect(res.ok).toBe(true);
     expect(bridgePayload?.agentControlled).toEqual([true, true]);
-    expect(bridgePayload?.agentPaths).toEqual([undefined, 'public/agents/mega-lucario-ex/main.py']);
+    expect(bridgePayload?.agentPaths).toEqual([undefined, 'public/agents.bundled/mega-lucario-ex/main.py']);
   });
 
   it('matches real CABT main-phase hand options with omitted source fields', () => {

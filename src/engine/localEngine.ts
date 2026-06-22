@@ -80,10 +80,24 @@ for (const row of CARD_ROWS) {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FRONTEND_ROOT = path.resolve(__dirname, '..', '..');
-const WORKSPACE_ROOT = path.resolve(FRONTEND_ROOT, '..');
+const WORKSPACE_ROOT = findWorkspaceRoot(FRONTEND_ROOT);
 const BRIDGE_PATH = path.join(FRONTEND_ROOT, 'src', 'engine', 'cabt_bridge.py');
 const GAME_LOGS_DIR = path.join(FRONTEND_ROOT, 'public', 'game-logs');
 const GAME_LOGS_MANIFEST = path.join(GAME_LOGS_DIR, 'logs.json');
+
+function findWorkspaceRoot(frontendRoot: string): string {
+  let current = frontendRoot;
+  while (true) {
+    if (fs.existsSync(path.join(current, 'users')) && fs.existsSync(path.join(current, 'third_party', 'cabt-viewer'))) {
+      return current;
+    }
+    const parent = path.dirname(current);
+    if (parent === current) {
+      return path.resolve(frontendRoot, '..');
+    }
+    current = parent;
+  }
+}
 
 export class LocalEngineController {
   private readonly demo = new CabtDemoController();
