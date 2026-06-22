@@ -566,7 +566,10 @@
     if (!selectedHand || !game || !canAct(selectedHand.playerIndex)) {
       return;
     }
-    await gameSessionStore.run(() => commandApi.playCard(selectedHand!.playerIndex, selectedHand!.handIndex, target));
+    const { playerIndex, handIndex } = selectedHand;
+    selectionStore.clearHandAndFocus();
+    clearDragState();
+    await gameSessionStore.run(() => commandApi.playCard(playerIndex, handIndex, target));
   }
 
   function playToSlot(slot: PokemonSlotView) {
